@@ -1,0 +1,48 @@
+<script src='marvelLibrary.js'></script>
+<script src='howToCalls.js'></script>
+
+<center><h1>Let's Marvel at Marvel</h1>
+
+<p>On this page, you can demo results from 2 functions utilizing the Marvel Library.</p>
+<dl>
+   <dt>printPicture();</dt>
+	<dd>Utilizes functions: 'getCharacterIdByName()' & 'getCharacterImageByName()'</dd>
+   <br>
+   <dt>printComics();</dt>
+        <dd>Utilizes functions: 'getCharacterIdByName()' & 'getSharedComicsByCharIds()'</dd>
+</dl>
+
+<br>
+
+<p>To test these functions, enter 2 Marvel characters' names into the input boxes.  If everything goes according to plan, you should see images of both characters and a list of at most 100 comics that both characters appear in together.  The titles of the comics will be hyperlinks to Marvel's website where more information is available.</p>
+
+<br>
+<p>As stated in the documentation, the characters' names must match Marvel's database exactly to work.  Be careful to avoid mistakes such as forgetting to put a '-' in 'Spider-Man'.  If you need help, try using "Rogue" and "Hulk" as your two characters.
+</p>
+
+<form method="GET">
+   <fieldset>
+	<legend>Enter 2 Marvel Characters' Names</legend>
+       	   <label>Character 1:</label>
+		<input type="text" name="charName" id="charName"/>
+           <label>Character 2:</label>
+                <input type="text" name="charName2" id="charName2"/>
+   </fieldset>
+
+   <input type="submit" id="submit" name="Submit">
+</form>
+
+<br>
+<h2 span id='results'></h2>
+<div id='imgDiv'>
+   <span id='lbl1'></span>
+   <span id='img1'></span>
+   <span id='img2'></span>
+   <span id='lbl2'></span>
+</div>
+<br>
+
+<div id='numResults'></div>
+<div id='comicList'></div>
+<br>
+<div id='endResults'></div></center>

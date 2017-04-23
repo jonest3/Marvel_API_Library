@@ -1,0 +1,285 @@
+<center><h1>Library Functions</h1>
+<h2>Click on functions to see the code<h2>
+</center>
+<button class="accordion">function getCharacterIdByName(charName);</button>
+<div class="panel">
+  <p>
+	<xmp>
+function getCharacterIdByName(charName){
+	var id = ""; // set to null string to use for condition checks later on
+	var req = new XMLHttpRequest();
+	req.open("GET", "http://gateway.marvel.com:80/v1/public/characters?name="+charName+"&apikey="+apiKey,false);	// must be called synchronously
+	req.addEventListener("load",function(){
+		if(req.status >= 200  &&  req.status < 400) // if request was successful
+ 		{
+			var response = JSON.parse(req.responseText);
+			if(response.data.total !== 0)	// if data was found
+			{
+				response.data.results[0].id;	// get the first id from the results array
+			}
+		}
+		else	// else, check your status
+			console.log("Error in network request: " + req.statusText);
+	});
+	req.send();	// must send prior to returning value
+	return id;	// return just the character's id or a null string
+}
+	</xmp>
+  </p>
+</div>
+
+<div>
+   <dl>
+   	<dt><strong>Description:</strong></dt> 
+		<dd>This function takes a name as an argument and uses it to make a synchronous call to Marvel's api to find the entered character's unique Marvel ID.</dd>
+	<dt><strong>Parameter List:</strong></dt>
+		<dd>charName - The name of a character.</dd>
+	<dt><strong>Returns:</strong></dt>
+		<dd>If call is successful, will return the valid ID. Else, it will return a null string ("").</dd>
+   </dl>
+</div>
+
+<button class="accordion">function getCharacterImageByName(charName);</button>
+<div class="panel">
+  <p>
+        <xmp>
+function getCharacterImageByName(charName){
+	var image = "";		// set as null string for conditional checking after return
+	var req = new XMLHttpRequest();
+	req.open("GET", "http://gateway.marvel.com:80/v1/public/characters?name="+charName+"&apikey="+apiKey,false);	// must be called synchronously
+	req.addEventListener("load",function(){
+		if(req.status >= 200  &&  req.status < 400)	// if request was successful
+		{
+			var response = JSON.parse(req.responseText);
+			if(response.data.total !== 0)	// if data was retrieved
+			{
+				// build the html code to get the image
+				image = "<img src=\"";
+				image += response.data.results[0].thumbnail.path;
+				image += "/portrait_incredible.";	// this is used for sizing and is one of several options Marvel has available
+				image += response.data.results[0].thumbnail.extension;
+				image += "\" alt=\""+charName+"\" style=\"width:216px;height:324px;\">";
+			}
+		}
+		else	// else, return an error
+			console.log("Error in network request: " + req.statusText);
+	});
+	req.send();	// must be called before return
+	return image;	// either return the html code for the image or null string
+}
+        </xmp>
+  </p>
+</div>
+
+<div>
+   <dl>
+	<dt><strong>Description:</strong></dt>
+		<dd>This function takes a name as an argument and uses it to make a synchronous call to Marvel's api to find and build the source for an image of that character to be displayed.</dd>
+	<dt><strong>Parameter List:</strong></dt> 
+		<dd>charName - The name of a character</dd>
+	<dt><strong>Returns:</strong></dt>
+		<dd>If call is successful, it will return the html code necessary to display a profile picture of the character entered.  Else, it will return a null string ("").</dd>
+   </dl>
+</div>
+
+<button class="accordion">function getCharacterNameById(charId);</button>
+<div class="panel">
+  <p>
+	<xmp>
+function getCharacterNameById(charId){
+	var name = "";	// set to null string for conditional testing later on
+	var req = new XMLHttpRequest();
+	req.open("GET", "http://gateway.marvel.com:80/v1/public/characters/"+charId+"&apikey="+apiKey,false);	// must be called synchronously
+	req.addEventListener("load",function(){	
+		if(req.status >= 200  &&  req.status < 400)	// if request is successful
+		{
+			var response = JSON.parse(req.responseText);
+			if(response.data.total !== 0)	// if data was returned
+			{
+				name = response.data.results[0].name;	// store the name of first result in 'name'
+			}
+		}
+		else	// print an error
+			console.log("Error in network request: " + req.statusText);
+	});
+	req.send();	// must be called prior to return
+	return name;	// return either the character's name or a null string
+}
+	</xmp>
+  </p>
+</div>
+
+<div>
+   <dl>
+        <dt><strong>Description: </strong></dt>
+		<dd>This function uses a unique, numerical identifier assigned to each Marvel character passed as an argument to return the name of the character is belongs to.</dd>
+        <dt><strong>Parameter List: </strong></dt>
+		<dd>charId - The unique, numerical identifier assigned to each Marvel character.</dd>
+        <dt><strong>Returns:</strong></dt>
+		<dd>If call is successful, it will return the name of the character whom's ID was passed as an argument.  Else, it will return a null string ("").</dd>
+   </dl>
+</div>
+
+
+<button class="accordion">function getSharedComicsByCharIds(charId1,charId2);</button>
+<div class="panel">
+  <p>
+	<xmp>
+function getSharedComicssByCharIds(charId1,charId2){
+	var sharedComicArray = [];	// create an empty array
+	var req = new XMLHttpRequest();
+	req.open("GET", "http://gateway.marvel.com:80/v1/public/comics?limit=100&sharedAppearances="+charId1+"%2C"+charId2+"&apikey="+apiKey,false);	// must be called synchronously
+	req.addEventListener("load",function(){
+		if(req.status >= 200  &&  req.status < 400)	// if request is successful
+		{
+			var response = JSON.parse(req.responseText);
+			if(response.data.total !== 0)	// if data was retrieved
+			{
+				var totalSharedComics = response.data.count;	// get the count of the number of comics retrieved (max is 100)
+				for(var i = 0; i < totalSharedComics; i++)	// for each element in the retreived data array
+				{
+					sharedComicArray.push({title:response.data.results[i].title,		// add the title of the comic
+								  id:response.data.results[i].id,		// the id of the comic
+							 description:response.data.results[i].description,	// the description of the comic
+								 url:response.data.results[i].urls[0].url});	// and the comic's url to the sharedComicArray.
+				}
+			}
+		}
+		else	// else show the error
+			console.log("Error in network request: " + req.statusText);
+	});
+	req.send();	// must be called prior to returning
+	return sharedComicArray;	// return either an empty array or an array of Comic objects
+}
+	</xmp>
+  </p>
+</div>
+
+<div>
+   <dl>
+        <dt><strong>Description:</strong></dt>
+		<dd>This function takes two character ideas and uses them to make a synchronous call to Marvel's api to retrieve a list of comics that both characters were in together.</dd>
+        <dt><strong>Parameter List:</strong></dt>
+		<dd>charId1 - the unique character idea for the first character.</dd>
+		<dd>charId2 - the unique character idea for the second character.</dd>
+        <dt><strong>Returns:</strong></dt>
+		<dd>If successful, an array of comic objects, with a maximum of 100 comics, that the two parsed character's have been in together.  Included in each array element is an comic object that stores the comic's title, id, description, and url.  Else, it returns an empty array.</dd>
+   </dl>
+</div>
+
+<br>
+<br>
+<h1>Example Use of Library</h1>
+<h3>As seen on the Demo page</h3>
+
+<button class="accordion">function printPicture();</button>
+<div class="panel">
+   <xmp>
+function printPicture(){
+	document.getElementById("submit").addEventListener("click",function(event){
+		var enteredName1 = document.getElementById("charName").value;	// get user's input value 1 (character 1's name)
+		var enteredName2 = document.getElementById("charName2").value;	// get user's input value 2 (character 2's name)
+
+		var name1Id = getCharacterIdByName(enteredName1);	// get id for character 1
+		var name2Id = getCharacterIdByName(enteredName2);	// get id for character 2
+
+		if(enteredName1 !== ""  &&  name1Id !== "")	// if the name was not blank and the name returned a valid id
+		{
+			var img1 = getCharacterImageByName(enteredName1);	// get the image for said character
+			document.getElementById("lbl1").textContent = enteredName1 + "  ";  // print character's name
+			document.getElementById("img1").innerHTML = img1;	// embed image
+		}
+		else if(name1Id !== "")	// if character name was not entered, return error
+			document.getElementById("img1").textContent = "No character entered.";
+		else	// else character is not a valid Marvel character
+			document.getElementById("img1").textContent = "";
+
+		if(enteredName2 !== ""  &&  name2Id !== "")	// if the name was not blank and the name returned a valid id
+		{
+			var img2 = getCharacterImageByName(enteredName2);	// get the image for said character
+			document.getElementById("lbl2").textContent = "  " + enteredName2;	// print the character's name
+			document.getElementById("img2").innerHTML = img2;	// embed image
+		}
+		else if(name2Id == "")	// if character name was not entered, return error
+			document.getElementById("img2").textContent = "  No character entered.";
+		else	// else character is not a valid Marvel character
+			document.getElementById("img2").textContent = "";
+
+		event.preventDefault();
+	});
+}
+   </xmp>
+</div>
+
+<div>
+   <dl>
+        <dt><strong>Description:</strong></dt>
+                <dd>This function is called once the submit button has been entered.</dd>
+		<dd>It then gets the two character names and uses 'getCharacterIdByName()' to get the unique identifiers for each character, which will be used to verify that the name enterd is a Marvel character. </dd>
+		<dd>If a valid character name has been submited, 'getCharacterImageByName()' is called parsing the name as its argument to return the correct html code to be stored in an element's 'innerHTML'.</dd>
+		<dd>If character is invalid or blank, the function will print an error message instead of calling for the image's html code.</dd>
+        <dt><strong>Parameter List:</strong></dt>
+                <dd>N/A - Does not accept arguments.</dd>
+	<dt><strong>Returned:</strong></dt>
+		<dd>N/A - Nothing is returned.</dd>
+   </dl>
+</div>
+
+<button class="accordion">function  printComics();</button>
+<div class="panel">
+   <xmp>
+function  printComics(){
+	document.getElementById("submit").addEventListener("click",function(event){
+		var enteredName1 =  document.getElementById("charName").value;		// get character name input by user (character 1)
+		var enteredName2 =  document.getElementById("charName2").value;		// get second character name input by user (character 2)
+  
+		var charId1 = getCharacterIdByName(enteredName1);	// get ids for both characters
+		var charId2 = getCharacterIdByName(enteredName2);
+
+		if(charId1 === ""  &&  charId2 === "")	// if both return null strings, neither character was found
+			document.getElementById("results").textContent = "Error: Character 1 & Character 2 not found.";
+		else if(charId1 === "")	// if character 1 returns null string, character 1 was invalid
+			document.getElementById("results").textContent = "Error: Character 1 not found.";
+		else if(charId2 === "")	// if character 2 returns null string, character 2 was invalid
+			document.getElementById("results").textContent = "Error: Character 2 not found.";
+		else	// else both were valid entries
+		{
+			var comics = getSharedComicsByCharIds(charId1,charId2);	// get array of all comics the 2 characters shared appearances in
+
+			document.getElementById("numResults").textContent = "Number of Results Found:  "+comics.length;	// show user how many results were found (max 100)
+
+			var listItem = "<dl>";	// begin to create list element for html code
+
+			if(comics.length === 0) // if no comics are shared, inform user
+				document.getElementById("results").textContent = "No shared comics found.";
+			else	
+			{
+				for(var i = 0; i < comics.length; i++)	// for every comic found
+				{
+					listItem += "<dt><a href=\"" +comics[i].url+"\" target=\"_blank\">"+ comics[i].title + "</a></dt>"; // add it to a blank list item with it's url and code to open in a new tab
+				}
+	
+				listItem += "</ul>"; // end your list element
+			}
+
+			document.getElementById("comicList").innerHTML = listItem;	// set innerHTML to display the list
+		}
+		event.preventDefault();
+	});
+}
+   </xmp>
+</div>
+
+<div>
+   <dl>
+        <dt><strong>Description:</strong></dt>
+                <dd>Once the submit button has been clicked, both values input into the character fields of the GET form.  The values should be names that are then parsed to the 'getCharacterIdByName()' function.  If both names are not found, an error message stating both names were not valid is printed.  Else if only one name is found to be valid, an error message for the oppose name is printed to the screen.  If both names get successful IDs, then they are parsed to 'getSharedComicsByCharIds()', which should return an array of comics both characters have appeared in together.  If the array is not empty, it will loop through the array to build the html code used to create an unordered list of each comic's title, which is also convered into a hyperlink to link back to Marvel's webpage to view more information about the particular comics.  Due to limitations imposed by Marvel's api, only a maxiimum of 100 comics will be returned.</dd>
+        <dt><strong>Parameter List:</strong></dt>
+                <dd>N/A - Does not accept arguments.</dd>
+        <dt><strong>Returns:</strong></dt>
+                <dd>N/A - Does not return anything.</dd>
+   </dl>
+</div>
+
+
+<script src='accordian.js'></script>

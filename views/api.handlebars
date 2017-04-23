@@ -1,0 +1,68 @@
+<center><h1><em>Really</em> Getting Started with Marvel's API</h1>
+
+<div>
+   <p>
+	Marvel does provide a simple ‘<a href='http://developer.marvel.com/documentation/getting_started'>Getting Started</a>' page for their API; however, it mainly focuses on ensuring
+	Marvel is going to get the credit where they deserve it.
+   </p>
+   <img src="http://vignette4.wikia.nocookie.net/marveldatabase/images/d/d2/Earth-616_0001.jpg/revision/latest/scale-to-width-down/325?cb=20110211050400&format=webp.jpg" alt="http://marvel.wikia.com/wiki/Earth-616" height=250px width=500px>
+   <p>
+	So let's <em>really</em> get started.
+   </p></center>
+
+   <h4>Things You MUST Do:</h4>
+
+   <ol>
+ 	<li><a href='https://marvel.com/register?referer=http%3A%2F%2Fdeveloper.marvel.com%2F'>Sign up</a> and get an API key!</li>
+		<ul>
+			<li>You will actually get 2 keys when you sign up: a public key and a private key.</li>
+			<li>You MUST use your public key for all calls to the api using an "apikey" parameter.</li>
+			<li>The public key will allow you to make 3,000 calls to the api a day.</li>
+			<li>ALWAYS KEEP YOUR PRIVATE KEY PRIVATE!</li>
+		</ul>
+	<li>Know the base endpoint!</li>
+		<ul>
+			<li>The Marvel Comics API's base endpoint is: http(s)://gateway.marvel.com/.</li>
+		</ul>
+	<li>Understand what you have access to!</li>
+		<ul>
+			<li>You will have access to SIX resource types with this api:</li>
+			<ol>
+				<li>Comics - the products the end-users read, better known as issues</li>
+				<li>Comic Series - made up of comics, typically sequentially, that share the same 
+						  title and volume.</li>
+				<li>Comic Stories - indivisible components of comics that can be covered in 
+						   multiple stories, but that will always be linked
+						   back to the original comic (i.e. a character's origin
+						   story).</li>
+				<li>Comic events and crossovers - big, universe-changing storylines and/or cameos
+						   made by characters from other stories visiting another character's
+						   story.</li>
+				<li>Creators - Who created the comic.</li>
+				<li>Characters - all of the different men, women, organizations, species, etc. that live
+						in the Marvel Universe.</li>
+			</ol>
+		</ul>
+	<li>Know your request method!</li>
+		<ul>
+			<li>All Marvel endpoints currently only accept HTTP GET requests.</li>
+		</ul>
+	<li>Know your errors!</li>
+		<ul>
+			<li>The best way to do this is to mess around with the Interactive API Tester.</li>
+			<li>Learn from your mistakes.</li>
+		</ul>
+	<li>Know your <a href='http://developer.marvel.com/documentation/apiresults'>results</a>!</li>
+		<ul>
+			<li>There is a lot of data that is made available to you, so it is important to understand where to find what you are looking for.</li>
+		</ul>
+   </ol>
+
+   <br>
+   <p>
+   	After signing up, you will gain access to the <a href='http://developer.marvel.com/docs'>Interactive API Tester</a>, a very useful tool that breaks down all the possible call combinations you can make to the API, shows and explains to you the different fields you can use to manipulate the data returned with each call, and gives you an example of the call and the results you would get from said call. 
+   </p>
+   <p>
+	This tool was critical for me while learning how to use the API.  The results of each call returns so much information, it can be quite overwhelming.  The tester made it easier to understand the different paths to use to obtain the information I wanted and also provided an excellent too for debugging, as well.
+   </p>
+</div>
